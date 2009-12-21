@@ -19,6 +19,30 @@ sub page (&;@) {
 
 template '/' => page {
     my ($self, $debugger) = @_;
+    show 'testing_form';
+    show 'matching_rules' => $debugger, '';
+};
+
+template testing_form => sub {
+    label { attr { for => 'path' } 'Path' }
+    input {
+        attr {
+            type => 'text',
+            name => 'path',
+            size => 50,
+        }
+    }
+};
+
+template matching_rules => sub {
+    my ($self, $debugger, $path) = @_;
+    my $dispatcher = $debugger->dispatcher;
+
+    ol {
+        for my $rule ($dispatcher->rules) {
+            li { $rule->name }
+        }
+    };
 };
 
 
