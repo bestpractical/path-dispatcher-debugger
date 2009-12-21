@@ -8,6 +8,7 @@ requires 'Any::Moose';
 requires 'HTTP::Engine';
 requires 'Path::Dispatcher';
 requires 'Template::Declare';
+requires 'Scalar::Util';
 
 WriteAll;
 

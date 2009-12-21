@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Path::Dispatcher::Debugger;
 use HTTP::Engine;
+use Scalar::Util 'blessed';
 
 my $dispatcher = shift or die "usage: $0 Dispatcher::Class::Name";
 if ($dispatcher =~ /^{/) {
