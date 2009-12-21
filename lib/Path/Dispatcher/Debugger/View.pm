@@ -59,15 +59,21 @@ sub display_rule {
     my ($rule) = @_;
 
     if ($rule->isa('Path::Dispatcher::Rule::Tokens')) {
-        return tt { $rule->readable_attributes }
+        tt { $rule->readable_attributes };
     }
     elsif ($rule->isa('Path::Dispatcher::Rule::Under')) {
-        return 'Under '
-             . outs_raw(display_rule($rule->predicate))
-             . outs_raw(display_rules($rule->rules));
+        outs 'Under ';
+        outs_raw(display_rule($rule->predicate));
+        outs(display_rules($rule->rules));
     }
-
-    return blessed($rule);
+    elsif ($rule->isa('Path::Dispatcher::Rule::Regex')) {
+        outs 'qr/';
+        tt { $rule->regex };
+        outs '/';
+    }
+    else {
+        blessed($rule);
+    }
 }
 
 1;
