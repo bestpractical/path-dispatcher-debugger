@@ -19,8 +19,9 @@ sub page (&;@) {
 
 template '/' => page {
     my ($self, $debugger) = @_;
+
     show 'testing_form';
-    show 'matching_rules' => $debugger, '';
+    show 'matching_rules' => $debugger;
 };
 
 template testing_form => sub {
@@ -36,6 +37,8 @@ template testing_form => sub {
 
 template matching_rules => sub {
     my ($self, $debugger, $path) = @_;
+    $path = '' if !defined($path);
+
     my $dispatcher = $debugger->dispatcher;
 
     ol {
