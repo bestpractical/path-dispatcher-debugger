@@ -1,7 +1,14 @@
 package Path::Dispatcher::Debugger;
-use strict;
-use warnings;
+use Any::Moose;
 use Path::Dispatcher;
+use Data::Dumper;
+
+sub handle_request {
+    my $self = shift;
+    my $request = shift;
+
+    HTTP::Engine::Response->new(body => 'hello world');
+}
 
 1;
 
