@@ -5,7 +5,11 @@ use Template::Declare::Tags;
 use base 'Template::Declare';
 
 template '/' => sub {
-    h1 { "Yo" };
+    my ($self, $debugger) = @_;
+    h1 { $debugger->dispatcher->name };
+    ol {
+        li { $_->name } for $debugger->dispatcher->rules;
+    }
 };
 
 

@@ -20,7 +20,9 @@ sub handle_request {
     my $self = shift;
     my $request = shift;
 
-    HTTP::Engine::Response->new(body => Template::Declare->show($request->request_uri));
+    my $body = Template::Declare->show($request->request_uri, $self);
+
+    HTTP::Engine::Response->new(body => $body);
 }
 
 1;
