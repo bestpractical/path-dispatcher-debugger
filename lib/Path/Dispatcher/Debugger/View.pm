@@ -4,12 +4,21 @@ use warnings;
 use Template::Declare::Tags;
 use base 'Template::Declare';
 
-template '/' => sub {
-    my ($self, $debugger) = @_;
-    h1 { $debugger->dispatcher->name };
-    ol {
-        li { $_->name } for $debugger->dispatcher->rules;
+sub page (&;@) {
+    my $contents = shift;
+    return sub {
+        my ($self, $debugger) = @_;
+        html {
+            body {
+                h2 { $debugger->dispatcher->name };
+                $contents->(@_);
+            }
+        }
     }
+}
+
+template '/' => page {
+    my ($self, $debugger) = @_;
 };
 
 
