@@ -63,7 +63,7 @@ sub display_rule {
     }
     elsif ($rule->isa('Path::Dispatcher::Rule::Under')) {
         outs 'Under ';
-        outs_raw(display_rule($rule->predicate));
+        outs(display_rule($rule->predicate));
         outs(display_rules($rule->rules));
     }
     elsif ($rule->isa('Path::Dispatcher::Rule::Regex')) {
