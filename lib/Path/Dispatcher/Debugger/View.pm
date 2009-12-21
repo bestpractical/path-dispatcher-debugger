@@ -58,7 +58,7 @@ sub display_rule {
     my ($rule) = @_;
 
     if ($rule->isa('Path::Dispatcher::Rule::Tokens')) {
-        return tt { $rule->tokens }
+        return tt { $rule->readable_attributes }
     }
     elsif ($rule->isa('Path::Dispatcher::Rule::Under')) {
         return 'Under '
