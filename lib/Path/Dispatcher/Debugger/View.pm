@@ -7,11 +7,11 @@ use base 'Template::Declare';
 sub page (&;@) {
     my $contents = shift;
     return sub {
-        my ($self, $debugger) = @_;
+        my ($self, $debugger, @args) = @_;
         html {
             body {
                 h2 { $debugger->dispatcher->name };
-                $contents->(@_);
+                $contents->($self, $debugger, @args);
             }
         }
     }
