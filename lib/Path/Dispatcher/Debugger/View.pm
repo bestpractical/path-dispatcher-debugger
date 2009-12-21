@@ -1,6 +1,7 @@
 package Path::Dispatcher::Debugger::View;
 use strict;
 use warnings;
+use Scalar::Util 'blessed';
 use Template::Declare::Tags;
 use base 'Template::Declare';
 
@@ -65,6 +66,8 @@ sub display_rule {
              . outs_raw(display_rule($rule->predicate))
              . outs_raw(display_rules($rule->rules));
     }
+
+    return blessed($rule);
 }
 
 1;
