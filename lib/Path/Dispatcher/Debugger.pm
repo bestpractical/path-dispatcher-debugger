@@ -3,11 +3,17 @@ use Any::Moose;
 use Path::Dispatcher;
 use Data::Dumper;
 
+has dispatcher => (
+    is       => 'ro',
+    isa      => 'Path::Dispatcher',
+    required => 1,
+);
+
 sub handle_request {
     my $self = shift;
     my $request = shift;
 
-    HTTP::Engine::Response->new(body => 'hello world');
+    HTTP::Engine::Response->new(body => Dumper($self->dispatcher));
 }
 
 1;
