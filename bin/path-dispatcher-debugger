@@ -8,6 +8,7 @@ use Scalar::Util 'blessed';
 my $dispatcher = shift or die "usage: $0 Dispatcher::Class::Name";
 if ($dispatcher =~ /^{/) {
     $dispatcher = eval $dispatcher;
+    die $@ if $@;
 }
 else {
     Any::Moose::load_class($dispatcher);
