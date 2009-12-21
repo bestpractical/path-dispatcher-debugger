@@ -41,13 +41,31 @@ template matching_rules => sub {
 
     my $dispatcher = $debugger->dispatcher;
 
-    ol {
-        for my $rule ($dispatcher->rules) {
-            li { $rule->name }
-        }
-    };
+    display_rules($dispatcher->rules);
 };
 
+sub display_rules {
+    my @rules = @_;
+
+    ol {
+        for my $rule (@rules) {
+            li { display_rule($rule) };
+        }
+    };
+}
+
+sub display_rule {
+    my ($rule) = @_;
+
+    if ($rule->isa('Path::Dispatcher::Rule::Tokens')) {
+        return tt { $rule->tokens }
+    }
+    elsif ($rule->isa('Path::Dispatcher::Rule::Under')) {
+        return 'Under '
+             . outs_raw(display_rule($rule->predicate))
+             . outs_raw(display_rules($rule->rules));
+    }
+}
 
 1;
 
