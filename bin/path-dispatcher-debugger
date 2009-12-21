@@ -10,6 +10,9 @@ if ($dispatcher =~ /^{/) {
 }
 else {
     Any::Moose::load_class($dispatcher);
+}
+
+unless (blessed($dispatcher) && $dispatcher->isa('Path::Dispatcher')) {
     if ($dispatcher->can('new')) {
         $dispatcher = $dispatcher->new;
     }
