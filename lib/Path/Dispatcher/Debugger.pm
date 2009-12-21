@@ -1,7 +1,9 @@
 package Path::Dispatcher::Debugger;
 use Any::Moose;
 use Path::Dispatcher;
-use Data::Dumper;
+
+use Path::Dispatcher::Debugger::View;
+use constant view_class => 'Path::Dispatcher::Debugger::View';
 
 has dispatcher => (
     is       => 'ro',
@@ -9,11 +11,16 @@ has dispatcher => (
     required => 1,
 );
 
+sub BUILD {
+    my $self = shift;
+    Template::Declare->init(dispatch_to => [$self->view_class]);
+}
+
 sub handle_request {
     my $self = shift;
     my $request = shift;
 
-    HTTP::Engine::Response->new(body => Dumper($self->dispatcher));
+    HTTP::Engine::Response->new(body => Template::Declare->show($request->request_uri));
 }
 
 1;
