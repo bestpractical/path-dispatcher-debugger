@@ -14,13 +14,8 @@ else {
     Any::Moose::load_class($dispatcher);
 }
 
-unless (blessed($dispatcher) && $dispatcher->isa('Path::Dispatcher')) {
-    if ($dispatcher->can('new')) {
-        $dispatcher = $dispatcher->new;
-    }
-    else {
-        $dispatcher = $dispatcher->dispatcher;
-    }
+if ($dispatcher->isa('Path::Dispatcher::Declarative')) {
+    $dispatcher = $dispatcher->dispatcher;
 }
 
 my $port = 9187;
