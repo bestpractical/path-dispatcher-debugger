@@ -10,5 +10,8 @@ requires 'Path::Dispatcher';
 requires 'Template::Declare';
 requires 'Scalar::Util';
 
+install_script('bin/path-dispatcher-debugger');
+install_share;
+
 WriteAll;
 
