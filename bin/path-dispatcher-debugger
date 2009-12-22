@@ -22,6 +22,7 @@ builder {
         Plack::App::Template::Declare->new(
             view => $debugger->view_class,
             args => [$debugger],
+            pass_request => 1,
         )->to_app;
     };
 };

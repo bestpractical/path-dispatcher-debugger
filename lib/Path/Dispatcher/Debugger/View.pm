@@ -8,7 +8,7 @@ use base 'Template::Declare';
 sub page (&;@) {
     my $contents = shift;
     return sub {
-        my ($self, $debugger, @args) = @_;
+        my ($self, $request, $debugger, @args) = @_;
         html {
             body {
                 head {
@@ -23,17 +23,17 @@ sub page (&;@) {
                     }
                 }
                 h2 { $debugger->dispatcher->name };
-                $contents->($self, $debugger, @args);
+                $contents->($self, $request, $debugger, @args);
             }
         }
     }
 }
 
 template '/' => page {
-    my ($self, $debugger) = @_;
+    my ($self, $request, $debugger) = @_;
 
     show 'testing_form';
-    show 'matching_rules' => $debugger;
+    show 'matching_rules' => $request, $debugger;
 };
 
 template testing_form => sub {
@@ -49,13 +49,15 @@ template testing_form => sub {
 };
 
 template matching_rules => sub {
-    my ($self, $debugger, $path) = @_;
+    my ($self, $request, $debugger) = @_;
+    my $path = $request->param('test_path');
     $path = '' if !defined($path);
 
     div {
         attr {
             id => 'matching_rules',
         };
+        h3 { "Matching: $path" };
         display_rules($debugger->dispatcher->rules);
     };
 };
