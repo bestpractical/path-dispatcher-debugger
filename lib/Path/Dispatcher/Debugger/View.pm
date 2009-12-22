@@ -70,7 +70,7 @@ template matching_rules => sub {
 sub display_rules {
     my @rules = @_;
 
-    ol {
+    ul {
         for my $rule (@rules) {
             li { display_rule($rule) };
         }
