@@ -29,12 +29,17 @@ Template::Declare->init(dispatch_to => [$debugger->view_class]);
 
 my $app = sub {
     my $request = Plack::Request->new(shift);
-    my $body = Template::Declare->show($request->request_uri, $debugger);
 
-    my $response = $request->new_response(200);
-    $response->content_type('text/html');
-    $response->body($body);
-    return $response->finalize;
+    if (Template::Declare->has_template($request->request_uri)) {
+        my $body = Template::Declare->show($request->request_uri, $debugger);
+
+        my $response = $request->new_response(200);
+        $response->content_type('text/html');
+        $response->body($body);
+        return $response->finalize;
+    }
+
+    return [404, ['Content-Type' => 'text/plain'], ['not found']];
 };
 
 builder {
