@@ -2,9 +2,13 @@
 use strict;
 use warnings;
 use Path::Dispatcher::Debugger;
+
 use File::ShareDir 'dist_dir';
-use Plack::Builder;
 use Scalar::Util 'blessed';
+
+use Plack::Builder;
+use Plack::App::File;
+use Plack::App::Template::Declare;
 
 my $dispatcher = $ENV{DEBUG_DISPATCHER} or die "Please set environment variable DEBUG_DISPATCHER";
 if ($dispatcher =~ /^{/) {
@@ -19,18 +23,15 @@ if ($dispatcher->isa('Path::Dispatcher::Declarative')) {
     $dispatcher = $dispatcher->dispatcher;
 }
 
-my $port = 9187;
 my $debugger = Path::Dispatcher::Debugger->new(
     dispatcher => $dispatcher,
 );
 
 builder {
     mount "/static" => builder {
-        require Plack::App::File;
         Plack::App::File->new(root => dist_dir('Path-Dispatcher-Debugger'))->to_app;
     };
     mount "/" => builder {
-        require Plack::App::Template::Declare;
         Plack::App::Template::Declare->new(
             view => $debugger->view_class,
             args => [$debugger],
