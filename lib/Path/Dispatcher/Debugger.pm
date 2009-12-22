@@ -11,20 +11,6 @@ has dispatcher => (
     required => 1,
 );
 
-sub BUILD {
-    my $self = shift;
-    Template::Declare->init(dispatch_to => [$self->view_class]);
-}
-
-sub handle_request {
-    my $self = shift;
-    my $request = shift;
-
-    my $body = Template::Declare->show($request->request_uri, $self);
-
-    HTTP::Engine::Response->new(body => $body);
-}
-
 1;
 
 __END__

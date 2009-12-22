@@ -2,10 +2,11 @@
 use strict;
 use warnings;
 use Path::Dispatcher::Debugger;
-use HTTP::Engine;
+use Plack::Request;
+use Plack::Builder;
 use Scalar::Util 'blessed';
 
-my $dispatcher = shift or die "usage: $0 Dispatcher::Class::Name\n       $0 '{perl code}'";
+my $dispatcher = $ENV{DEBUG_DISPATCHER} or die "Please set environment variable DEBUG_DISPATCHER";
 if ($dispatcher =~ /^{/) {
     $dispatcher = eval $dispatcher;
     die $@ if $@;
@@ -23,14 +24,15 @@ my $debugger = Path::Dispatcher::Debugger->new(
     dispatcher => $dispatcher,
 );
 
-HTTP::Engine->new(
-    interface => {
-        module => 'ServerSimple',
-        args   => {
-            host => 'localhost',
-            port => $port,
-        },
-        request_handler => sub { $debugger->handle_request(@_) },
-    },
-)->run;
+Template::Declare->init(dispatch_to => [$debugger->view_class]);
+
+my $app = sub {
+    my $request = Plack::Request->new(shift);
+    my $body = Template::Declare->show($request->request_uri, $debugger);
+
+    my $response = $request->new_response(200);
+    $response->content_type('text/html');
+    $response->body($body);
+    return $response->finalize;
+};
 
