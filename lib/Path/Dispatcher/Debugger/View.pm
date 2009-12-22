@@ -12,11 +12,13 @@ sub page (&;@) {
         html {
             body {
                 head {
-                    title { blessed($debugger) }
-                    script {
-                        attr {
-                            type => 'text/javascript',
-                            src  => '/static/jquery-1.2.6.js',
+                    title { blessed($debugger) };
+                    for my $file ('jquery-1.2.6.js', 'path-dispatcher-debugger.js') {
+                        script {
+                            attr {
+                                type => 'text/javascript',
+                                src  => "/static/$file",
+                            }
                         }
                     }
                 }
@@ -38,9 +40,10 @@ template testing_form => sub {
     label { attr { for => 'path' } 'Path' }
     input {
         attr {
-            type => 'text',
-            name => 'path',
-            size => 50,
+            type  => 'text',
+            name  => 'path',
+            class => 'path_tester',
+            size  => 50,
         }
     }
 };
