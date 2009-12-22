@@ -11,6 +11,15 @@ sub page (&;@) {
         my ($self, $debugger, @args) = @_;
         html {
             body {
+                head {
+                    title { blessed($debugger) }
+                    script {
+                        attr {
+                            type => 'text/javascript',
+                            src  => '/static/jquery-1.2.6.js',
+                        }
+                    }
+                }
                 h2 { $debugger->dispatcher->name };
                 $contents->($self, $debugger, @args);
             }
