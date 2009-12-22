@@ -52,9 +52,12 @@ template matching_rules => sub {
     my ($self, $debugger, $path) = @_;
     $path = '' if !defined($path);
 
-    my $dispatcher = $debugger->dispatcher;
-
-    display_rules($dispatcher->rules);
+    div {
+        attr {
+            id => 'matching_rules',
+        };
+        display_rules($debugger->dispatcher->rules);
+    };
 };
 
 sub display_rules {
