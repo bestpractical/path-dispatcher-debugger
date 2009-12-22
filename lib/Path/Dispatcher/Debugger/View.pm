@@ -58,7 +58,12 @@ template matching_rules => sub {
             id => 'matching_rules',
         };
         h3 { "Matching: $path" };
-        display_rules($debugger->dispatcher->rules);
+
+        my $dispatch = $debugger->dispatcher->dispatch($path);
+        my %seen = map { $_ => 1 } map { $_->rule } $dispatch->matches;
+
+        display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
+        display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
     };
 };
 
