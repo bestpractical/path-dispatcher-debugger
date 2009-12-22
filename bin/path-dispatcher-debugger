@@ -3,7 +3,6 @@ use strict;
 use warnings;
 use Path::Dispatcher::Debugger;
 use File::ShareDir 'dist_dir';
-use Plack::Request;
 use Plack::Builder;
 use Scalar::Util 'blessed';
 
