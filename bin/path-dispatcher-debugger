@@ -11,21 +11,8 @@ use Plack::App::File;
 use Plack::App::Template::Declare;
 
 my $dispatcher = $ENV{DEBUG_DISPATCHER} or die "Please set environment variable DEBUG_DISPATCHER";
-if ($dispatcher =~ /^{/) {
-    $dispatcher = eval $dispatcher;
-    die $@ if $@;
-}
-else {
-    Any::Moose::load_class($dispatcher);
-}
 
-if ($dispatcher->isa('Path::Dispatcher::Declarative')) {
-    $dispatcher = $dispatcher->dispatcher;
-}
-
-my $debugger = Path::Dispatcher::Debugger->new(
-    dispatcher => $dispatcher,
-);
+my $debugger = Path::Dispatcher::Debugger->new(dispatcher => $dispatcher);
 
 builder {
     mount "/static" => builder {

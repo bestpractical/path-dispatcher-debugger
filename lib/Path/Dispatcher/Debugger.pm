@@ -1,15 +1,42 @@
 package Path::Dispatcher::Debugger;
 use Any::Moose;
+use Any::Moose '::Util::TypeConstraints' => [qw/subtype as coerce from via/];
 use Path::Dispatcher;
 
 use Path::Dispatcher::Debugger::View;
 use constant view_class => 'Path::Dispatcher::Debugger::View';
 
+subtype 'PathDispatcher'
+    => as 'Path::Dispatcher';
+
+coerce 'PathDispatcher'
+    => from 'Str'
+    => via {
+        my $dispatcher = $_;
+        if ($dispatcher =~ /^{/) {
+            $dispatcher = eval $dispatcher;
+            die $@ if $@;
+        }
+        else {
+            Any::Moose::load_class($dispatcher);
+        }
+
+        if ($dispatcher->isa('Path::Dispatcher::Declarative')) {
+            $dispatcher = $dispatcher->dispatcher;
+        }
+
+        $dispatcher;
+    };
+
 has dispatcher => (
     is       => 'ro',
-    isa      => 'Path::Dispatcher',
+    isa      => 'PathDispatcher',
+    coerce   => 1,
     required => 1,
 );
+
+no Any::Moose;
+no Any::Moose '::Util::TypeConstraints';
 
 1;
 
