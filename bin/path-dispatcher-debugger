@@ -42,6 +42,6 @@ builder {
         require Plack::App::File;
         Plack::App::File->new(root => dist_dir('Path-Dispatcher-Debugger'))->to_app;
     };
-    $app;
+    mount "/" => $app;
 };
 
