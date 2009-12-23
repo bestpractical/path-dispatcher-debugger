@@ -158,6 +158,10 @@ sub display_rule {
     elsif ($rule->isa('Path::Dispatcher::Rule::Under')) {
         outs 'Under ';
         outs(display_rule($rule->predicate));
+        if ($extra->{completions}) {
+            display_completions(@{ delete $extra->{completions} });
+        }
+
         outs(display_rules($rule->rules));
     }
     elsif ($rule->isa('Path::Dispatcher::Rule::Regex')) {
