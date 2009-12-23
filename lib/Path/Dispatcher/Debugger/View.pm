@@ -42,7 +42,7 @@ template testing_form => sub {
         attr {
             type  => 'text',
             name  => 'path',
-            class => 'path_tester',
+            id    => 'path_tester',
             size  => 50,
         }
     }
@@ -51,6 +51,7 @@ template testing_form => sub {
         attr {
             type    => 'radio',
             name    => 'dispatch_type',
+            class   => 'dispatch_type',
             value   => 'dispatch',
             checked => 'checked',
         }
@@ -61,6 +62,7 @@ template testing_form => sub {
         attr {
             type  => 'radio',
             name  => 'dispatch_type',
+            class => 'dispatch_type',
             value => 'prefix',
         }
     }
@@ -70,6 +72,7 @@ template testing_form => sub {
         attr {
             type  => 'radio',
             name  => 'dispatch_type',
+            class => 'dispatch_type',
             value => 'completion',
         }
     }
