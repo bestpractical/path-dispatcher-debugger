@@ -101,7 +101,7 @@ template matching_rules => sub {
             for my $rule ($debugger->dispatcher->rules) {
                 my @completions = $rule->complete($path_object);
                 if (@completions) {
-                    push @matches, [$rule, join ', ', @completions];
+                    push @matches, { rule => $rule, completions => \@completions };
                 }
                 else {
                     push @not_matches, $rule;
@@ -136,10 +136,13 @@ sub display_rules {
 }
 
 sub display_rule {
-    my ($rule) = @_;
+    my $rule = shift;
     my $extra;
 
-    ($rule, $extra) = @$rule if ref($rule) eq 'ARRAY';
+    if (ref($rule) eq 'HASH') {
+        $extra = $rule;
+        $rule = delete $extra->{rule};
+    }
 
     if ($rule->isa('Path::Dispatcher::Rule::Tokens')) {
         tt { $rule->readable_attributes };
@@ -158,7 +161,20 @@ sub display_rule {
         outs blessed($rule);
     }
 
-    span { $extra } if defined $extra;
+    if ($extra->{completions}) {
+        display_completions(@{ $extra->{completions} });
+    }
+}
+
+sub display_completions {
+    my @completions = @_;
+
+    span {
+        while (my $c = shift @completions) {
+            span { attr { class => 'completion' } $c };
+            span { ', ' } if @completions;
+        }
+    }
 }
 
 1;
