@@ -91,7 +91,7 @@ template matching_rules => sub {
         attr {
             id => 'matching_rules',
         };
-        h3 { "Matching: $path" };
+        h3 { "\u$type-matching: $path" };
 
         if ($type eq 'completion') {
             my @matches;
