@@ -48,7 +48,8 @@ Path::Dispatcher::Debugger - flexible and extensible dispatch
 
 =head1 SYNOPSIS
 
-    plackup bin/pddb.psgi
+    export DEBUG_DISPATCHER=Path::Dispatcher::Debugger::Dummy
+    plackup bin/path-dispatcher-debugger
 
 =head1 AUTHOR
 

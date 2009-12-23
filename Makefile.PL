@@ -5,7 +5,9 @@ all_from   'lib/Path/Dispatcher/Debugger.pm';
 repository 'http://github.com/bestpractical/path-dispatcher-debugger';
 
 requires 'Any::Moose';
-requires 'HTTP::Engine';
+requires 'Plack::Request';
+requires 'Plack::App::File';
+requires 'Plack::App::Template::Declare';
 requires 'Path::Dispatcher';
 requires 'Template::Declare';
 requires 'Scalar::Util';
