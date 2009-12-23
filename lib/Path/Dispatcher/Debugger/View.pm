@@ -81,8 +81,11 @@ template testing_form => sub {
 
 template matching_rules => sub {
     my ($self, $request, $debugger) = @_;
+
     my $path = $request->param('test_path');
     $path = '' if !defined($path);
+
+    my $type = $request->param('dispatch_type') || 'dispatch';
 
     div {
         attr {
@@ -90,11 +93,34 @@ template matching_rules => sub {
         };
         h3 { "Matching: $path" };
 
-        my $dispatch = $debugger->dispatcher->dispatch($path);
-        my %seen = map { $_ => 1 } map { $_->rule } $dispatch->matches;
+        if ($type eq 'completion') {
+            my @matches;
+            my @not_matches;
 
-        display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
-        display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
+            for my $rule ($debugger->dispatcher->rules) {
+                my @completions = $rule->complete($path);
+                if (@completions) {
+                    push @matches, [$rule, join ', ', @completions];
+                }
+                else {
+                    push @not_matches, $rule;
+                }
+            }
+
+            h5 { "Matched Rules" };
+            display_rules(@matches);
+            h5 { "Unmatched Rules" };
+            display_rules(@not_matches);
+        }
+        else {
+            my $dispatch = $debugger->dispatcher->dispatch($path);
+            my %seen = map { $_ => 1 } map { $_->rule } $dispatch->matches;
+
+            h5 { "Matched Rules" };
+            display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
+            h5 { "Unmatched Rules" };
+            display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
+        }
     };
 };
 
