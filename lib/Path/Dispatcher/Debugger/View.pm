@@ -117,18 +117,30 @@ template matching_rules => sub {
             }
 
             h5 { "Matched Rules" };
-            display_rules(@matches);
+            div {
+                class is 'matched_rules';
+                display_rules(@matches);
+            }
             h5 { "Unmatched Rules" };
-            display_rules(@not_matches);
+            div {
+                class is 'unmatched_rules';
+                display_rules(@not_matches);
+            }
         }
         else {
             my $dispatch = $debugger->dispatcher->dispatch($path);
             my %seen = map { $_ => 1 } map { $_->rule } $dispatch->matches;
 
             h5 { "Matched Rules" };
-            display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
+            div {
+                class is 'matched_rules';
+                display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
+            }
             h5 { "Unmatched Rules" };
-            display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
+            div {
+                class is 'unmatched_rules';
+                display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
+            }
         }
     };
 };
