@@ -101,10 +101,10 @@ template matching_rules => sub {
         };
         h3 { "\u$type-matching: $path" };
 
-        if ($type eq 'completion') {
-            my @matches;
-            my @not_matches;
+        my @matches;
+        my @unmatches;
 
+        if ($type eq 'completion') {
             my $path_object = $debugger->dispatcher->path_class->new($path);
             for my $rule ($debugger->dispatcher->rules) {
                 my @completions = $rule->complete($path_object);
@@ -112,35 +112,26 @@ template matching_rules => sub {
                     push @matches, { rule => $rule, completions => \@completions };
                 }
                 else {
-                    push @not_matches, $rule;
+                    push @unmatches, $rule;
                 }
-            }
-
-            h5 { "Matched Rules" };
-            div {
-                class is 'matched_rules';
-                display_rules(@matches);
-            }
-            h5 { "Unmatched Rules" };
-            div {
-                class is 'unmatched_rules';
-                display_rules(@not_matches);
             }
         }
         else {
             my $dispatch = $debugger->dispatcher->dispatch($path);
             my %seen = map { $_ => 1 } map { $_->rule } $dispatch->matches;
+            @matches   = grep {  $seen{$_} } $debugger->dispatcher->rules;
+            @unmatches = grep { !$seen{$_} } $debugger->dispatcher->rules;
+        }
 
-            h5 { "Matched Rules" };
-            div {
-                class is 'matched_rules';
-                display_rules(grep {  $seen{$_} } $debugger->dispatcher->rules);
-            }
-            h5 { "Unmatched Rules" };
-            div {
-                class is 'unmatched_rules';
-                display_rules(grep { !$seen{$_} } $debugger->dispatcher->rules);
-            }
+        h5 { "Matched Rules" };
+        div {
+            class is 'matched_rules';
+            display_rules(@matches);
+        }
+        h5 { "Unmatched Rules" };
+        div {
+            class is 'unmatched_rules';
+            display_rules(@unmatches);
         }
     };
 };
