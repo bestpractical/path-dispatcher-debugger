@@ -13,6 +13,14 @@ sub page (&;@) {
             body {
                 head {
                     title { blessed($debugger) };
+                    link {
+                        attr {
+                            rel  => 'stylesheet',
+                            type => 'text/css',
+                            href => '/static/path-dispatcher-debugger.css',
+                        }
+                    };
+
                     for my $file ('jquery-1.2.6.js', 'path-dispatcher-debugger.js') {
                         script {
                             attr {
