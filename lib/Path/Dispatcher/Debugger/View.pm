@@ -186,7 +186,14 @@ sub display_completions {
 
     span {
         while (my $c = shift @completions) {
-            span { attr { class => 'completion' } $c };
+            a {
+                attr {
+                    class   => 'completion',
+                    onclick => "PathDispatcherDebugger.set_path('$c'); return false;",
+                    href    => '#',
+                }
+                $c
+            };
             span { ', ' } if @completions;
         }
     }
