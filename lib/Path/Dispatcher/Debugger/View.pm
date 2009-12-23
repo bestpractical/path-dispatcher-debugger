@@ -110,6 +110,9 @@ sub display_rules {
 
 sub display_rule {
     my ($rule) = @_;
+    my $extra;
+
+    ($rule, $extra) = @$rule if ref($rule) eq 'ARRAY';
 
     if ($rule->isa('Path::Dispatcher::Rule::Tokens')) {
         tt { $rule->readable_attributes };
@@ -125,8 +128,10 @@ sub display_rule {
         outs '/';
     }
     else {
-        blessed($rule);
+        outs blessed($rule);
     }
+
+    span { $extra } if defined $extra;
 }
 
 1;
