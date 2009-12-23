@@ -46,6 +46,34 @@ template testing_form => sub {
             size  => 50,
         }
     }
+
+    input {
+        attr {
+            type    => 'radio',
+            name    => 'dispatch_type',
+            value   => 'dispatch',
+            checked => 'checked',
+        }
+    }
+    label { 'Dispatch' }
+
+    input {
+        attr {
+            type  => 'radio',
+            name  => 'dispatch_type',
+            value => 'prefix',
+        }
+    }
+    label { 'Prefix' }
+
+    input {
+        attr {
+            type  => 'radio',
+            name  => 'dispatch_type',
+            value => 'completion',
+        }
+    }
+    label { 'Completion' }
 };
 
 template matching_rules => sub {
