@@ -97,8 +97,9 @@ template matching_rules => sub {
             my @matches;
             my @not_matches;
 
+            my $path_object = $debugger->dispatcher->path_class->new($path);
             for my $rule ($debugger->dispatcher->rules) {
-                my @completions = $rule->complete($path);
+                my @completions = $rule->complete($path_object);
                 if (@completions) {
                     push @matches, [$rule, join ', ', @completions];
                 }
