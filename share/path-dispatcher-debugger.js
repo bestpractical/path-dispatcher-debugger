@@ -26,5 +26,6 @@ PathDispatcherDebugger.set_path = function (path) {
 jQuery(function () {
     jQuery('#path_tester').bind('keyup', PathDispatcherDebugger.recalculate_matching_rules);
     jQuery('.dispatch_type').bind('change', PathDispatcherDebugger.recalculate_matching_rules);
+    jQuery('#path_tester').focus();
 });
 
